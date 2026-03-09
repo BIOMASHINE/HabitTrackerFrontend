@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habit Tracker | Подтверждение почты</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-body">
+
+<div class="auth-card">
+
+    <div class="confirm-icon">
+        ✉️
+    </div>
+
+    <h1>Подтвердите почту</h1>
+
+    <p class="subtitle">
+        Мы отправили код подтверждения на вашу почту.<br>
+        Введите его ниже, чтобы активировать аккаунт.
+    </p>
+
+    <form class="auth-form">
+
+        <input type="text" placeholder="Введите код из письма" id="token">
+
+        <button type="button" class="btn-primary" id="confirm email">
+            Подтвердить почту
+        </button>
+
+    </form>
+
+    <!-- <p class="switch-link">
+        Не получили письмо?
+        <a href="#">Отправить повторно</a>
+    </p> -->
+
+    <p class="switch-link">
+        <a href="/html/auth/index.html">Вернуться ко входу</a>
+    </p>
+    <div id="message" class="message"></div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email');
+        const messageDiv = document.getElementById('message');
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+        }
+
+        document.getElementById('confirm email').onclick = async () => {
+            const token = document.getElementById('token').value;
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/v1/auth/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, token })
+                });
+                if (response.ok) {
+                    showMessage('Подтверждение успешно! Перенаправление...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/html/dashboard.html';
+                    }, 1500);
+                } else {
+                    let errorMsg = 'Ошибка подтверждения';
+                    try {
+                        const errorData = await response.json();
+                        if (errorData.detail) errorMsg = errorData.detail;
+                    } catch (e) {}
+                    showMessage(errorMsg, 'error');
+                }
+            } catch (error) {
+                showMessage('Ошибка сети или сервера. Проверьте подключение.', 'error');
+            }
+        };
+    </script>
+
+</div>
+
+</body>
+</html>

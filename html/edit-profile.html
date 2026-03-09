@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habit Tracker | Изменить данные</title>
+<link rel="stylesheet" href="/css/style.css">
+<script src="/js/edit-profile.js" defer></script>
+</head>
+<body>
+
+<header class="main-header">
+    <h2>Изменение данных</h2>
+    <a href="/html/profile.html" class="btn-secondary">← Назад</a>
+</header>
+
+<div class="form-wrapper">
+
+    <div class="form-card">
+        <h3>Обновление профиля</h3>
+        <p class="subtitle">Измените никнейм или почту</p>
+
+        <form class="habit-form">
+
+            <div class="form-group">
+                <label>Новый никнейм</label>
+                <input type="text" placeholder="Введите новый никнейм" id="username">
+            </div>
+
+            <div class="form-group">
+                <label>Новая почта</label>
+                <input type="email" placeholder="Введите новую почту" id="email">
+            </div>
+
+            <button type="button" class="btn-primary" id="submit">
+                Сохранить изменения
+            </button>
+
+            <a href="/html/auth/reset-request.html" class="link-secondary">
+                Забыли пароль?
+            </a>
+            
+            <div id="edit-message" class="message"></div>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

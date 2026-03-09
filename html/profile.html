@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habit Tracker | Профиль</title>
+<link rel="stylesheet" href="/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+<script src="/js/profile.js" defer type="module"></script>
+</head>
+<body>
+
+<header class="main-header">
+    <h2>Профиль</h2>
+    <a href="/html/dashboard.html" class="btn-secondary">← Назад</a>
+</header>
+
+<div class="profile-wrapper">
+
+    <div class="profile-left">
+        <div class="profile-card">
+            
+            <div class="profile-avatar"></div>
+            <h3 id="name"></h3>
+            <p class="profile-email"></p>
+            
+            
+            <div class="profile-buttons">
+                <a href="/html/edit-profile.html" class="btn-primary">
+                    Изменить данные
+                </a>
+                
+                <button class="btn-danger" id="logout">
+                    Выйти
+                </button>
+            </div>
+            
+            <div id="profile-message" class="message"></div>
+        </div>
+</div>
+
+    <div class="profile-right">
+        <div class="settings-card calendar-card">
+            <h4>Календарь активности</h4>
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function() {
+        const calendarEl = document.getElementById('calendar');
+        const messageDiv = document.getElementById('profile-message');
+
+        function showMessage(text, type) {
+            if (messageDiv) {
+                messageDiv.textContent = text;
+                messageDiv.className = `message ${type}`;
+            } else {
+                alert(text);
+            }
+        }
+
+        if (!calendarEl) return;
+
+        // Переменная для хранения дат выполнения
+        let allDates = [];
+
+        // Сначала загружаем данные
+        try {
+            await loadAllCompletionDates();
+        } catch (error) {
+            showMessage('Ошибка загрузки данных календаря: ' + error.message, 'error');
+            return;
+        }
+
+        // Создаём календарь ПОСЛЕ загрузки данных
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            height: 500,
+            locale: 'ru',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+            },
+            dayCellContent: function(arg) {
+                const year = arg.date.getFullYear();
+                const month = String(arg.date.getMonth() + 1).padStart(2, '0');
+                const day = String(arg.date.getDate()).padStart(2, '0');
+                const dateStr = `${year}-${month}-${day}`;
+                const dayNumber = arg.date.getDate(); // число
+                if (allDates.includes(dateStr)) {
+                    // Возвращаем HTML с огоньком и числом
+                    return { html: `<span class="fire-number">🔥${dayNumber}</span>` };
+                } else {
+                    return { html: `<span>${dayNumber}</span>` };
+                }
+            }
+        });
+
+        calendar.render();
+
+        // Загружаем все даты выполнения
+        async function loadAllCompletionDates() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = '/html/auth/index.html';
+                return;
+            }
+
+            let habitsResponse;
+            try {
+                habitsResponse = await fetch('http://127.0.0.1:8000/api/v1/habits', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+            } catch (error) {
+                throw new Error('Сетевая ошибка при загрузке привычек');
+            }
+
+            if (!habitsResponse.ok) {
+                if (habitsResponse.status === 401) {
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/html/auth/index.html';
+                    return;
+                }
+                let errorMsg = 'Ошибка загрузки привычек';
+                try {
+                    const errorData = await habitsResponse.json();
+                    if (errorData.detail) errorMsg = errorData.detail;
+                } catch (e) {}
+                throw new Error(errorMsg);
+            }
+
+            let habits;
+            try {
+                habits = await habitsResponse.json();
+            } catch (error) {
+                throw new Error('Ошибка обработки ответа от сервера (привычки)');
+            }
+
+            const datesSet = new Set();
+            for (const habit of habits) {
+                let statsResponse;
+                try {
+                    statsResponse = await fetch(`http://127.0.0.1:8000/api/v1/habits/stats/${habit.id}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                } catch (error) {
+                    // Пропускаем эту привычку, но продолжаем
+                    continue;
+                }
+
+                if (statsResponse.ok) {
+                    try {
+                        const stats = await statsResponse.json();
+                        if (stats.dates && Array.isArray(stats.dates)) {
+                            stats.dates.forEach(date => datesSet.add(date));
+                        }
+                    } catch (error) {
+                        // Игнорируем ошибку парсинга для одной привычки
+                    }
+                }
+            }
+            allDates = Array.from(datesSet).sort();
+        }
+    });
+</script>
+
+</body>
+</html>
