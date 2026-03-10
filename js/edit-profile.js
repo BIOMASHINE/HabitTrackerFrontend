@@ -29,7 +29,7 @@ submit.onclick = async function updateUserData() {
 
     try {
         // Отправляем PATCH-запрос на обновление пользователя
-        const response = await fetch('http://127.0.0.1:8000/api/v1/users/me', {
+        const response = await fetch('https://habittracker-production-api.up.railway.app:8080/api/v1/users/me', {
             method: 'PATCH',
             headers: {
                 'accept': 'application/json',
@@ -59,7 +59,7 @@ submit.onclick = async function updateUserData() {
         if (emailValue) {
             const requestVerifyBody = { email: emailValue };
             const verifyResponse = await fetch(
-                'http://127.0.0.1:8000/api/v1/auth/request-verify-token',
+                'https://habittracker-production-api.up.railway.app:8080/api/v1/auth/request-verify-token',
                 {
                     method: 'POST',
                     headers: {

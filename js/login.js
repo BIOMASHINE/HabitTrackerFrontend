@@ -28,7 +28,7 @@ submit.onclick = async function logging() {
     });
 
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/v1/auth/login', {
+        const response = await fetch('https://habittracker-production-api.up.railway.app:8080/api/v1/auth/login', {
             method: 'POST',
             headers: {
                 'accept': 'application/json',

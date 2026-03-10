@@ -25,7 +25,7 @@ submit.onclick = async function createHabit() {
     };
 
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/v1/habits', {
+        const response = await fetch('https://habittracker-production-api.up.railway.app:8080/api/v1/habits', {
             method: 'POST',
             headers: {
                 'accept': 'application/json',
