@@ -15,7 +15,7 @@ function showMessage(text, type) {
 
 async function getData() {
     try {
-        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/users/me', {
+        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/users/me/', {
             headers: {
                 'accept': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -51,7 +51,7 @@ await getData();
 
 logout.onclick = async function logout() {
     try {
-        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/auth/logout', {
+        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/auth/logout/', {
             method: 'POST',
             headers: {
                 'accept': 'application/json',

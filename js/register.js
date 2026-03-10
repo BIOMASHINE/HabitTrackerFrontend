@@ -31,7 +31,7 @@ submit.onclick = async function registering() {
     };
 
     try {
-        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/auth/register', {
+        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/auth/register/', {
             method: 'POST',
             headers: {
                 'accept': 'application/json',
@@ -44,7 +44,7 @@ submit.onclick = async function registering() {
             // Регистрация успешна, отправляем запрос на верификацию
             const requestEmailBody = { email: emailVal };
             try {
-                await fetch('https://habittracker-production-api.up.railway.app/api/v1/auth/request-verify-token', {
+                await fetch('https://habittracker-production-api.up.railway.app/api/v1/auth/request-verify-token/', {
                     method: 'POST',
                     headers: {
                         'accept': 'application/json',

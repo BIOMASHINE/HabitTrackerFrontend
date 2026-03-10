@@ -26,7 +26,7 @@ let stats = [];
 
 async function getHabits() {
     try {
-        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/habits', {
+        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/habits/', {
             headers: {
                 'accept': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -55,7 +55,7 @@ async function getStats() {
     const habitStats = [];
     for (let i = 0; i < habits.length; i++) {
         try {
-            const response = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/stats/${habits[i].id}`, {
+            const response = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/stats/${habits[i].id}/`, {
                 headers: {
                     'accept': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -113,7 +113,7 @@ function render() {
 
 async function loadHabits() {
     try {
-        const responseHabits = await fetch('https://habittracker-production-api.up.railway.app/api/v1/habits', {
+        const responseHabits = await fetch('https://habittracker-production-api.up.railway.app/api/v1/habits/', {
             headers: {
                 'accept': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -138,7 +138,7 @@ async function loadHabits() {
         const newStats = [];
         for (let i = 0; i < habits.length; i++) {
             try {
-                const response = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/stats/${habits[i].id}`, {
+                const response = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/stats/${habits[i].id}/`, {
                     headers: {
                         'accept': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -191,7 +191,7 @@ habitsList.onclick = async function (event) {
             const habit = habits[index];
             try {
                 if (!habit.completed) {
-                    const response = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/completions/${habit.id}`, {
+                    const response = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/completions/${habit.id}/`, {
                         method: 'POST',
                         headers: {
                             'accept': 'application/json',
@@ -216,7 +216,7 @@ habitsList.onclick = async function (event) {
                     habit.completionId = data.id;
                     localStorage.setItem(`completion_${habit.id}`, data.id);
 
-                    const statsResponse = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/stats/${habit.id}`, {
+                    const statsResponse = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/stats/${habit.id}/`, {
                         headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
                     });
                     if (statsResponse.ok) {
@@ -227,7 +227,7 @@ habitsList.onclick = async function (event) {
                         showMessage('Не удалось обновить статистику', 'error');
                     }
                 } else {
-                    const response = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/completions/${habit.completionId}`, {
+                    const response = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/completions/${habit.completionId}/`, {
                         method: 'DELETE',
                         headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
                     });
@@ -245,7 +245,7 @@ habitsList.onclick = async function (event) {
                         showMessage(errorMsg, 'error');
                         return;
                     }
-                    const statsResponse = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/stats/${habit.id}`, {
+                    const statsResponse = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/stats/${habit.id}/`, {
                         headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
                     });
                     if (statsResponse.ok) {
@@ -265,7 +265,7 @@ habitsList.onclick = async function (event) {
             return;
         } else if (type === 'remove') {
             try {
-                const response = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/${habits[index].id}`, {
+                const response = await fetch(`https://habittracker-production-api.up.railway.app/api/v1/habits/${habits[index].id}/`, {
                     method: 'DELETE',
                     headers: {
                         'accept': 'application/json',
@@ -325,7 +325,7 @@ habitsList.onclick = async function (event) {
 
             try {
                 const response = await fetch(
-                    `https://habittracker-production-api.up.railway.app/api/v1/habits/stats/${habits[index].id}?limit=${period}`,
+                    `https://habittracker-production-api.up.railway.app/api/v1/habits/stats/${habits[index].id}?limit=${period}/`,
                     {
                         headers: {
                             'accept': 'application/json',
