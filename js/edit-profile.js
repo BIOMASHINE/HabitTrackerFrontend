@@ -55,44 +55,12 @@ submit.onclick = async function updateUserData() {
             return;
         }
 
-        // Если обновили email, отправляем запрос на верификацию
-        if (emailValue) {
-            const requestVerifyBody = { email: emailValue };
-            const verifyResponse = await fetch(
-                'https://habittracker-production-api.up.railway.app/api/v1/auth/request-verify-token',
-                {
-                    method: 'POST',
-                    headers: {
-                        'accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestVerifyBody)
-                }
-            );
+        // Успешное обновление — просто показываем сообщение и редиректим на профиль
+        showMessage('Данные обновлены!', 'success');
+        setTimeout(() => {
+            window.location.href = '/html/profile.html';
+        }, 1500);
 
-            if (!verifyResponse.ok) {
-                let errorMsg = 'Ошибка при отправке кода подтверждения';
-                try {
-                    const errorData = await verifyResponse.json();
-                    if (errorData.detail) errorMsg = errorData.detail;
-                } catch (e) {}
-                showMessage(errorMsg, 'error');
-                return;
-            }
-
-            // Сохраняем email в localStorage для страницы подтверждения
-            localStorage.setItem('email', emailValue);
-            showMessage('Данные обновлены. Перенаправление на подтверждение...', 'success');
-            setTimeout(() => {
-                window.location.href = '/html/auth/email-confirm.html';
-            }, 1500);
-        } else {
-            // Обновили только username
-            showMessage('Данные обновлены!', 'success');
-            setTimeout(() => {
-                window.location.href = '/html/profile.html';
-            }, 1500);
-        }
     } catch (error) {
         showMessage('Ошибка сети или сервера: ' + error.message, 'error');
     }

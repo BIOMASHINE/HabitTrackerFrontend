@@ -55,6 +55,7 @@ logout.onclick = async function logout() {
             method: 'POST',
             headers: {
                 'accept': 'application/json',
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });

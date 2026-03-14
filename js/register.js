@@ -41,23 +41,11 @@ submit.onclick = async function registering() {
         });
 
         if (response.ok) {
-            // Регистрация успешна, отправляем запрос на верификацию
-            const requestEmailBody = { email: emailVal };
-            try {
-                await fetch('https://habittracker-production-api.up.railway.app/api/v1/auth/request-verify-token', {
-                    method: 'POST',
-                    headers: {
-                        'accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestEmailBody)
-                });
-            } catch (verifyError) {
-                showMessage('Ошибка при отправке кода подтверждения, но регистрация прошла. Попробуйте запросить код позже.', 'error');
-                // Всё равно перенаправляем на страницу подтверждения
-            }
-            // Перенаправление на страницу подтверждения
-            window.location.href = '/html/auth/email-confirm.html';
+            // Регистрация успешна — сразу перенаправляем на дашборд
+            showMessage('Регистрация успешна! Перенаправление...', 'success');
+            setTimeout(() => {
+                window.location.href = '/html/dashboard.html';
+            }, 1500);
         } else {
             let errorMsg = 'Ошибка регистрации';
             try {
