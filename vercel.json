@@ -1,0 +1,24 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/html/auth/index.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/html/dashboard.html"
+    },
+    {
+      "source": "/profile",
+      "destination": "/html/profile.html"
+    },
+    {
+      "source": "/edit-profile",
+      "destination": "/html/edit-profile.html"
+    },
+    {
+      "source": "/create-habit",
+      "destination": "/html/create-habit.html"
+    }
+  ]
+}
