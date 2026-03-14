@@ -28,7 +28,7 @@ submit.onclick = async function logging() {
     });
 
     try {
-        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/auth/login', {
+        const response = await fetch('https://habittracker-zqo0.onrender.com/api/v1/auth/login', {
             method: 'POST',
             headers: {
                 'accept': 'application/json',

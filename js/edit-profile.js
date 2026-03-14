@@ -29,7 +29,7 @@ submit.onclick = async function updateUserData() {
 
     try {
         // Отправляем PATCH-запрос на обновление пользователя
-        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/users/me', {
+        const response = await fetch('https://habittracker-zqo0.onrender.com/api/v1/users/me', {
             method: 'PATCH',
             headers: {
                 'accept': 'application/json',

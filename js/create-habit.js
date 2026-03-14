@@ -25,7 +25,7 @@ submit.onclick = async function createHabit() {
     };
 
     try {
-        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/habits', {
+        const response = await fetch('https://habittracker-zqo0.onrender.com/api/v1/habits', {
             method: 'POST',
             headers: {
                 'accept': 'application/json',

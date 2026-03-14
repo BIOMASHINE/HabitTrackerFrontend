@@ -31,7 +31,7 @@ submit.onclick = async function registering() {
     };
 
     try {
-        const response = await fetch('https://habittracker-production-api.up.railway.app/api/v1/auth/register', {
+        const response = await fetch('https://habittracker-zqo0.onrender.com/api/v1/auth/register', {
             method: 'POST',
             headers: {
                 'accept': 'application/json',
